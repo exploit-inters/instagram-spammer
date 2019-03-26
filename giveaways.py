@@ -7,10 +7,7 @@ import re
 import random
 
 TIME_TO_SLEEP = 10
-KEYSTROKE = 'cs'
-MOUSE_CLICK_POS = (960, 1020)
-
-# 960, 1020
+MOUSE_CLICK_POS = (960, 1020) # default for my setup
 
 def putCursor():
     global MOUSE_CLICK_POS
@@ -56,9 +53,16 @@ def main(raw_data):
     time_wait = 10
     print("Waiting {} seconds, time to set thigs up or cancel the program!"\
           .format(time_wait))
+    print("Please, move the mouse to the selected position to make the click")
+    print("and wait for the program start")
     for i in range(time_wait):
         print("{}..".format(i))
         time.sleep(1)
+
+    print("Capturing mouse position!")
+    global MOUSE_CLICK_POS
+    MOUSE_CLICK_POS = pg.position()
+    print("Captured mouse position:", MOUSE_CLICK_POS)
 
     print("|> Starting process!")
 
