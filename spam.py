@@ -21,12 +21,11 @@ def sendUser(username, number, click_pos):
     #  for _ in range(30):
         #  pg.typewrite(['backspace'])
 
-    pg.typewrite(['f5']) # reload page
-    time.sleep(2) # wait to reload
-
     putCursor(click_pos)
     print("\tTyping user #{} ~ @{}".format(number, username))
     pg.typewrite('@{}\n'.format(username))
+    time.sleep(1)
+    pg.typewrite(['f5']) # reload page
 
 def getNames():
     files = [ file.name for file in os.scandir('assets/') if file.name[-4:] == '.csv' ]
