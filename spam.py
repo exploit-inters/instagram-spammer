@@ -18,8 +18,11 @@ def sendUser(username, number, click_pos):
     Will type the @username and press ENTER key
     '''
     # erase anything in there
-    for _ in range(30):
-        pg.typewrite(['backspace'])
+    #  for _ in range(30):
+        #  pg.typewrite(['backspace'])
+
+    pg.typewrite(['f5']) # reload page
+    time.sleep(2) # wait to reload
 
     putCursor(click_pos)
     print("\tTyping user #{} ~ @{}".format(number, username))
