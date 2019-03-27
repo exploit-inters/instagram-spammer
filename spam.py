@@ -15,35 +15,40 @@ def putCursor(click_pos):
 
 def sendUser(username, number, click_pos):
     '''
-    Will type the @username and press ENTER key
+    Will type the @username and press ENTER key, then reload the page
     '''
-    # erase anything in there
-    #  for _ in range(30):
-        #  pg.typewrite(['backspace'])
-
     putCursor(click_pos)
-    print("\tTyping user #{} ~ @{}".format(number, username))
+    print("Typing user #{} ~ @{}".format(number, username))
     pg.typewrite('@{}\n'.format(username))
-    time.sleep(1)
+    time.sleep(2)
     pg.typewrite(['f5']) # reload page
 
 def getNames():
+    '''
+    Will create a dataframe object with pandas from the .csv created with
+    'Helper Tools for Instagram', and filter only the usernames
+    '''
     files = [ file.name for file in os.scandir('assets/') if file.name[-4:] == '.csv' ]
     valid_users = list()
     for file in files:
         df = pd.read_csv('assets/' + file)
+
         # catch all usernames from the file
         [ valid_users.append(person) for person in list(df['username']) ]
 
-    #  username_pattern = re.compile(r'''title=\"\w+\"\shref=\"/(\w+)/\"''')
-    #  users = username_pattern.findall(raw)
     return list(set(valid_users))
 
 def updateStatus(index):
+    '''
+    Will update .status file with the current index being sent to instagram
+    '''
     with open('.status', 'w') as status:
         status.write(str(index))
 
 def checkStatus():
+    '''
+    Will read .status to know in which index the program has stopped earlier
+    '''
     try:
         with open('.status', 'r') as status:
             last_number = int(status.read())
@@ -53,7 +58,9 @@ def checkStatus():
         return 0
 
 def main():
+    ''' main function '''
     global TIME_TO_SLEEP
+
     userlist = sorted(getNames())
     print("@INFO: Fetched {} users".format(len(userlist)))
 
@@ -62,12 +69,12 @@ def main():
         mouse_pos = pg.position()
         print("Captured position:", mouse_pos)
         print("Starting spammer!")
-        print("-"*80)
 
     except KeyboardInterrupt:
-        print("\nNevermind")
+        print("\n\nNevermind")
         exit()
 
+    print("-"*80)
     last_index = checkStatus()
 
     # for each user, call the sendUser function
@@ -77,7 +84,7 @@ def main():
                 sendUser(user, index, mouse_pos)
                 updateStatus(index)
                 rand_time = random.randint(TIME_TO_SLEEP-5, TIME_TO_SLEEP + 5)
-                print("\t\tWait: {}s".format(rand_time))
+                print("\tWait: {}s".format(rand_time))
                 time.sleep(rand_time) # DO NOT RUN THE PROGRAM WITHOUT THIS!
                 #  time.sleep(1)
             except KeyboardInterrupt:
